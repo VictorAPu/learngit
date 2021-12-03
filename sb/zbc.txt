@@ -1,2 +1,2 @@
-import cv2
-import numpy as np
+Git is a distributed version control system.
+Git is free software.
