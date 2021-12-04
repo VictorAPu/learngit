@@ -1,0 +1,12 @@
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/list.c
+can1_test\list.o: D:\keil5\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
+can1_test\list.o: D:\keil5\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+can1_test\list.o: D:\keil5\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+can1_test\list.o: ../Core/Inc/FreeRTOSConfig.h
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h
+can1_test\list.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h

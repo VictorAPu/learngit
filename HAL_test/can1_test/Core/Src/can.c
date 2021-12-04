@@ -9,10 +9,10 @@
   * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
   * All rights reserved.</center></h2>
   *
-  * This software component is licensed by ST under BSD 3-Clause license,
-  * the "License"; You may not use this file except in compliance with the
-  * License. You may obtain a copy of the License at:
-  *                        opensource.org/licenses/BSD-3-Clause
+  * This software component is licensed by ST under Ultimate Liberty license
+  * SLA0044, the "License"; You may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at:
+  *                             www.st.com/SLA0044
   *
   ******************************************************************************
   */
@@ -22,8 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 
-
-
+#include "global_variate.h"
 
 /* USER CODE END 0 */
 
@@ -163,9 +162,9 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef* canHandle)
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
     /* CAN1 interrupt Init */
-    HAL_NVIC_SetPriority(CAN1_TX_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(CAN1_TX_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(CAN1_TX_IRQn);
-    HAL_NVIC_SetPriority(CAN1_RX0_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(CAN1_RX0_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(CAN1_RX0_IRQn);
   /* USER CODE BEGIN CAN1_MspInit 1 */
 
@@ -196,9 +195,9 @@ void HAL_CAN_MspInit(CAN_HandleTypeDef* canHandle)
     HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     /* CAN2 interrupt Init */
-    HAL_NVIC_SetPriority(CAN2_TX_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(CAN2_TX_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(CAN2_TX_IRQn);
-    HAL_NVIC_SetPriority(CAN2_RX0_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(CAN2_RX0_IRQn, 5, 0);
     HAL_NVIC_EnableIRQ(CAN2_RX0_IRQn);
   /* USER CODE BEGIN CAN2_MspInit 1 */
 
@@ -261,7 +260,55 @@ void HAL_CAN_MspDeInit(CAN_HandleTypeDef* canHandle)
 }
 
 /* USER CODE BEGIN 1 */
+void CAN1_SendCurrent(uint32_t id, int16_t current1, int16_t current2, int16_t current3, int16_t current4)//传入参数发送给电调的电流值
+{
+  static CAN_TxHeaderTypeDef TxMessage;
+	uint8_t TxData[8] = {0};
+  uint32_t TxMailbox; 
+	
+  TxMessage.StdId = id;
+  TxMessage.IDE = CAN_ID_STD;
+	TxMessage.RTR = CAN_RTR_DATA;
+	TxMessage.DLC = 0x08;
+	TxMessage.TransmitGlobalTime = DISABLE;  
+	
+  TxData[0] = (current1>>8);
+	TxData[1] =  current1;
+	TxData[2] = (current2>>8);
+	TxData[3] =  current2;
+	TxData[4] = (current3>>8);
+	TxData[5] =  current3;
+	TxData[6] = (current4>>8);
+	TxData[7] =  current4;
+	
+  HAL_CAN_AddTxMessage(&hcan1, &TxMessage , TxData , &TxMailbox );
+	
+}
 
+void CAN2_SendCurrent(uint32_t id, int16_t current1, int16_t current2, int16_t current3, int16_t current4)//传入参数发送给电调的电流值
+{
+  static CAN_TxHeaderTypeDef TxMessage;
+  uint8_t TxData[8] = {0};
+  uint32_t TxMailbox; 
+	
+  TxMessage.StdId = id;
+  TxMessage.IDE = CAN_ID_STD;
+	TxMessage.RTR = CAN_RTR_DATA;
+	TxMessage.DLC = 0x08;
+	TxMessage.TransmitGlobalTime = DISABLE;  
+	
+  TxData[0] = (current1>>8);
+	TxData[1] =  current1;
+	TxData[2] = (current2>>8);
+	TxData[3] =  current2;
+	TxData[4] = (current3>>8);
+	TxData[5] =  current3;
+	TxData[6] = (current4>>8);
+	TxData[7] =  current4;
+	
+  HAL_CAN_AddTxMessage(&hcan2, &TxMessage , TxData , &TxMailbox );
+	
+}
 /* USER CODE END 1 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

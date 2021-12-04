@@ -28,3 +28,5 @@ can1_test\stm32f4xx_hal_tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal
 can1_test\stm32f4xx_hal_tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ramfunc.h
 can1_test\stm32f4xx_hal_tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 can1_test\stm32f4xx_hal_tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
+can1_test\stm32f4xx_hal_tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
+can1_test\stm32f4xx_hal_tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h

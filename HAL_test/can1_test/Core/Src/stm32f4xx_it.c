@@ -23,6 +23,12 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+#include "motor_control.h"
+#include "global_variate.h"
+#include "PID.h"
+
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,6 +64,8 @@
 /* External variables --------------------------------------------------------*/
 extern CAN_HandleTypeDef hcan1;
 extern CAN_HandleTypeDef hcan2;
+extern TIM_HandleTypeDef htim6;
+
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -141,19 +149,6 @@ void UsageFault_Handler(void)
 }
 
 /**
-  * @brief This function handles System service call via SWI instruction.
-  */
-void SVC_Handler(void)
-{
-  /* USER CODE BEGIN SVCall_IRQn 0 */
-
-  /* USER CODE END SVCall_IRQn 0 */
-  /* USER CODE BEGIN SVCall_IRQn 1 */
-
-  /* USER CODE END SVCall_IRQn 1 */
-}
-
-/**
   * @brief This function handles Debug monitor.
   */
 void DebugMon_Handler(void)
@@ -164,33 +159,6 @@ void DebugMon_Handler(void)
   /* USER CODE BEGIN DebugMonitor_IRQn 1 */
 
   /* USER CODE END DebugMonitor_IRQn 1 */
-}
-
-/**
-  * @brief This function handles Pendable request for system service.
-  */
-void PendSV_Handler(void)
-{
-  /* USER CODE BEGIN PendSV_IRQn 0 */
-
-  /* USER CODE END PendSV_IRQn 0 */
-  /* USER CODE BEGIN PendSV_IRQn 1 */
-
-  /* USER CODE END PendSV_IRQn 1 */
-}
-
-/**
-  * @brief This function handles System tick timer.
-  */
-void SysTick_Handler(void)
-{
-  /* USER CODE BEGIN SysTick_IRQn 0 */
-
-  /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
-  /* USER CODE BEGIN SysTick_IRQn 1 */
-
-  /* USER CODE END SysTick_IRQn 1 */
 }
 
 /******************************************************************************/
@@ -229,6 +197,20 @@ void CAN1_RX0_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles TIM6 global interrupt, DAC1 and DAC2 underrun error interrupts.
+  */
+void TIM6_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+
+  /* USER CODE END TIM6_DAC_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim6);
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+
+  /* USER CODE END TIM6_DAC_IRQn 1 */
+}
+
+/**
   * @brief This function handles CAN2 TX interrupts.
   */
 void CAN2_TX_IRQHandler(void)
@@ -257,13 +239,30 @@ void CAN2_RX0_IRQHandler(void)
 }
 
 /* USER CODE BEGIN 1 */
+
+extern ST_PID PID_pitch_6020POS;
+extern ST_PID PID_pitch_6020Vel;
+extern ST_PID PID_yaw_6020POS;
+extern ST_PID PID_yaw_6020Vel;
+
+extern ST_ENCODER encoder_pitch;
+extern ST_ENCODER encoder_yaw;
+
 CAN_TxHeaderTypeDef TXHeader;
 CAN_RxHeaderTypeDef RXHeader;
-int value = 0;
-int value2 = 0;
-uint8_t TXmessage[8] = {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77};
-uint8_t RXmessage[8];
-uint32_t pTxMailbox = 0;
+
+uint32_t value_pitch;
+uint32_t value_yaw; 
+
+int16_t speed_pitch;
+int16_t speed_yaw;
+
+int8_t  temperature_pitch;
+int8_t  temperature_yaw;
+
+//uint8_t TXmessage[8] = {0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77};
+//uint8_t RXmessage[8];
+//uint32_t pTxMailbox = 0;
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)//????0????????
 {
@@ -277,8 +276,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)//????0????????
 		  {
 			  //-------------------pitch-------------------
 		      case 0x205:
-				    value ++;
-
+				    value_pitch = GetEncoderNumber(RXmessage)-720;
+						speed_pitch	=	GetSpeed(RXmessage);
+						temperature_pitch =	GetTemperature(RXmessage);
+					  Abs_Encoder_Process(&encoder_pitch,value_pitch);
+					  PID_pitch_6020Vel.fpFB = (speed_pitch/1);
+				  	PID_pitch_6020POS.fpFB = ((encoder_pitch.SumValue/(8192*1))*360);
 			      break;
 			  default:
 				  break;
@@ -297,8 +300,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)//????0????????
 		  {
 			  //-------------------yaw-------------------
 		      case 0x205:
-				    value2 ++;
-
+				    value_yaw = GetEncoderNumber(RXmessage)-4000;
+						speed_yaw	=	GetSpeed(RXmessage);
+						temperature_yaw =	GetTemperature(RXmessage);
+					  Abs_Encoder_Process(&encoder_yaw,value_yaw);
+					  PID_yaw_6020Vel.fpFB = (speed_yaw/1);
+				  	PID_yaw_6020POS.fpFB = ((encoder_yaw.SumValue/(8192*1))*360);
 			      break;
 			  default:
 				  break;
