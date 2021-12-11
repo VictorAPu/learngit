@@ -21,7 +21,7 @@
 "tim2_test\stm32f4xx_hal.o"
 "tim2_test\stm32f4xx_hal_exti.o"
 "tim2_test\system_stm32f4xx.o"
---library_type=microlib --strict --scatter "TIM2_test\TIM2_test.sct"
+--strict --scatter "TIM2_test\TIM2_test.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "TIM2_test.map" -o TIM2_test\TIM2_test.axf

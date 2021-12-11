@@ -31,6 +31,7 @@ can1_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 can1_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 can1_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 can1_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
+can1_test\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_wwdg.h
 can1_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h
 can1_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h
 can1_test\main.o: ../Core/Inc/FreeRTOSConfig.h
@@ -46,6 +47,7 @@ can1_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 can1_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 can1_test\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
 can1_test\main.o: ../Core/Inc/can.h
+can1_test\main.o: ../Core/Inc/wwdg.h
 can1_test\main.o: ../Core/Inc/gpio.h
 can1_test\main.o: ..\User_code\global_variate.h
 can1_test\main.o: ../Core/Inc/stm32f4xx_it.h

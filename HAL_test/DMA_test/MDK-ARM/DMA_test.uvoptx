@@ -170,6 +170,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>chentao,0x10</ItemText>
         </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>rx_buffer,0x10</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
